@@ -1,6 +1,6 @@
 <template>
     <MetaTags title="Sing In" description="Sign in to your account" />
-    <div> This my page</div>
+    <AuthForm />
 </template>
 <script setup>
 
