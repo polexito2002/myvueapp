@@ -15,5 +15,11 @@ export default function useAxios() {
     withXSRFToken: true,
   });
 
-  return api;
+  async function csrf() {
+
+    return await api.get("/sanctum/csrf-cookie")
+
+}
+
+  return {api, csrf };
 }

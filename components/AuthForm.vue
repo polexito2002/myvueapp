@@ -14,24 +14,23 @@
       </div>
   
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" @submit.prevent="handleForm">
          
 
             <FormGroup v-if="props.formType == 'signup'"  
                         label="Full name"  
                         name="name" type="text" 
                         autocomplete="name" 
-                        required labelFor="name" 
-                        labelClass="block text-sm font-medium leading-6 text-gray-900"
-                        inputClass="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        />
+                        required labelFor="name"
+                        v-model="userForm.name"
+                        :errorMessage="errorBag.name" />
+
             <FormGroup label="Email address"  
                         name="email" type="email" 
                         autocomplete="email" 
                         required labelFor="email" 
-                        labelClass="block text-sm font-medium leading-6 text-gray-900"
-                        inputClass="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        />
+                        v-model="userForm.email"
+                        :errorMessage="errorBag.email" />
 
             
             <div class="my-2">
@@ -39,6 +38,21 @@
                         name="password" type="password" 
                         autocomplete="current-password" 
                         required labelFor="password"
+                        v-model="userForm.password"
+                        :errorMessage="errorBag.password"
+                       
+                        />
+             </div>           
+            
+             <div class="my-2">
+            <FormGroup  v-if="props.formType == 'signup'"
+                        label="Confirm password"  
+                        name="password_confirmation" type="password" 
+                        autocomplete="current-password" 
+                        required labelFor="password"
+                        v-model="userForm.password_confirmation"
+                        :errorMessage="errorBag.password"
+                            
                         />
          
               <div class="text-sm text-end" v-if="props.formType == 'signin'">
@@ -57,6 +71,27 @@
               </Button>
           </div>
         </form>
+
+   <p class="mt-10 text-center text-sm text-gray-500">
+    <span v-if="props.formType == 'signin'">
+      Not a member?
+    <NuxtLink
+      to="/signup" 
+      class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+      Start a 14 day free trial
+      </NuxtLink>
+    </span>
+    <span v-else>
+     Already a member?
+    <NuxtLink
+      to="/" 
+      class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+      Login to your account
+      </NuxtLink>
+    </span>
+
+
+    </p>
   
       </div>
     </div>
@@ -72,5 +107,28 @@ formType: {
   validator: prop => ['signin','signup'].includes(prop)
 }
 })
+
+
+const userForm = reactive({
+  name: '',
+  email: '',
+  password: '',
+  password_confirmation: ''
+
+})
+const {login, register, errorBag }= useAuth()
+
+
+function handleForm()
+{
+if (props.formType == "signin" ) {
+  login(userForm)
+} else {
+  register (userForm)
+}
+}
+
+
+
   </script>
   

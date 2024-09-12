@@ -1,6 +1,6 @@
 <template>
     <MetaTags title="Sing In" description="Sign in to your account" />
-    <AuthForm />
+    <AuthForm formType="signin"></AuthForm>
 </template>
 <script setup>
 
